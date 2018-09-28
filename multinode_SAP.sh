@@ -112,16 +112,15 @@ else
     fi
 fi
 
-
-
+https://github.com/Emrals/emrals/releases/download/v0.12.2.4.2/linux-x64.tar.gz
 	
 #Install Latest
 echo '==========================================================================='
-echo 'Downloading latest version:  wget https://github.com/Emrals/emrals/releases/download/v'"$version"'/linux-x64.tar.gz' &&  wget https://github.com/Emrals/emrals/releases/download/v"$version"/linux-x64.tar.gz
+echo 'Downloading latest version:  wget https://github.com/Emrals/emrals/releases/download/v0.12.2.4.2/linux-x64.tar.gz' &&  wget https://github.com/Emrals/emrals/releases/download/v0.12.2.4.2/linux-x64.tar.gz
 			
 #Install Latest
 echo '==========================================================================='
-echo 'Extract new methuselah: \n# tar -xf emerals-'"$version"'-linux.tar.xz -C /usr/local/bin' && tar -xf linux-x64.tar.gz -C /usr/local/bin
+echo 'Extract new methuselah: \n# tar -xf linux-x64.tar.gz -C /usr/local/bin' && tar -xf linux-x64.tar.gz -C /usr/local/bin
 rm linux-x64.tar.gz
 
 # our new mnode unpriv user acc is added
