@@ -114,13 +114,17 @@ fi
 
 
 
-
-# daemon not found compile it
-        
 	
 #Install Latest
 echo '==========================================================================='
 wget https://raw.githubusercontent.com/Emrals/masternode/master/auto-install.sh && chmod +x auto-install.sh && ./auto-install.sh
+
+echo 'Downloading latest version:  wget https://github.com/Emrals/emrals/releases/download/v'"$version"'/linux-x64.tar.gz' &&  wget https://github.com/Emrals/emrals/releases/download/v"$version"/linux-x64.tar.gz
+			
+#Install Latest
+echo '==========================================================================='
+echo 'Extract new methuselah: \n# tar -xf emerals-'"$version"'-linux.tar.xz -C /usr/local/bin' && tar -xf linux-x64.tar.gz -C /usr/local/bin
+rm linux-x64.tar.gz
 
 # our new mnode unpriv user acc is added
 if id "sap" >/dev/null 2>&1; then
@@ -152,7 +156,7 @@ for NUM in $(seq 1 ${count}); do
     if [ ! -d "$BASE"/multinode/SAP_"${NUM}" ]; then
         echo "creating data directory $BASE/multinode/SAP_${NUM}" 
         mkdir -p "$BASE"/multinode/SAP_"${NUM}" 
-		#Generating Random Password for methuselahd JSON RPC
+		#Generating Random Password for emeralsd JSON RPC
 		USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 		USERPASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 		read -e -p "MasterNode Key for SAP_"${NUM}": " MKey
@@ -172,7 +176,7 @@ echo 'rpcport=500'"${NUM}" >> "$BASE"/multinode/SAP_"${NUM}"/emrals.conf
 
 echo 'ip addr del 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> start_multinode.sh
 echo 'ip addr add 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> start_multinode.sh
-echo "runuser -l sap -c 'methuselahd -daemon -pid=$BASE/multinode/SAP_${NUM}/emrals.pid -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/multinode/SAP_${NUM}'" >> start_multinode.sh
+echo "runuser -l sap -c 'emrals -daemon -pid=$BASE/multinode/SAP_${NUM}/emrals.pid -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/multinode/SAP_${NUM}'" >> start_multinode.sh
 
 echo 'ip addr del 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> stop_multinode.sh
 echo "emrals-cli -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> stop_multinode.sh
