@@ -177,7 +177,7 @@ echo 'ip addr del 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> stop_multin
 echo "emrals-cli -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> stop_multinode.sh
 
 echo "echo '====================================================${NUM}========================================================================'" >> mn_status.sh
-echo "emrals-cli -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/multinode/SAP_${NUM} masternode debug " >> mn_status.sh
+echo "emrals-cli -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/multinode/SAP_${NUM} masternode status" >> mn_status.sh
 
 echo "echo '====================================================${NUM}========================================================================'" >> getinfo.sh
 echo "emrals-cli -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
