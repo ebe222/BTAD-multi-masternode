@@ -117,8 +117,6 @@ fi
 	
 #Install Latest
 echo '==========================================================================='
-wget https://raw.githubusercontent.com/Emrals/masternode/master/auto-install.sh && chmod +x auto-install.sh && ./auto-install.sh
-
 echo 'Downloading latest version:  wget https://github.com/Emrals/emrals/releases/download/v'"$version"'/linux-x64.tar.gz' &&  wget https://github.com/Emrals/emrals/releases/download/v"$version"/linux-x64.tar.gz
 			
 #Install Latest
