@@ -161,7 +161,7 @@ rpcpassword=$USERPASS
 server=1
 daemon=1
 listen=1
-maxconnections=32
+maxconnections=64
 masternode=1
 masternodeprivkey=$MKey
 promode=1" |sudo tee -a "$BASE"/multinode/SAP_"${NUM}"/emrals.conf >/dev/null
@@ -179,7 +179,7 @@ echo "emrals-cli -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/mul
 echo "echo '====================================================${NUM}========================================================================'" >> mn_status.sh
 echo "emrals-cli -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/multinode/SAP_${NUM} masternode status" >> mn_status.sh
 
-echo "echo '====================================================${NUM}========================================================================'" >> getinfo.sh
+echo "echo '====================================================${NUM}========================================================================'" >> mn_getinfo.sh
 echo "emrals-cli -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
 
 fi
