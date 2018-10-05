@@ -115,7 +115,9 @@ sudo make
 sudo make check
 sudo make install
 sudo ldconfig
-
+cd /BTAD-multi-masternode
+rm boost_1_58_0.tar.gz
+rm -rf boost_1_58_0
 #Create 2GB swap file
 if grep -q "SwapTotal" /proc/meminfo; then
     echo -e "${GREEN}Skipping disk swap configuration...${NC} \n"
