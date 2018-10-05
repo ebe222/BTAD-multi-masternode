@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASE="/home/sap"
-PORT=30001
+PORT=8120
 # Execute options
 ARGS=$(getopt -o "hp:n:c:r:wsudx" -l "help,count:,net" -n "multinode_SAP.sh" -- "$@");
 
@@ -114,12 +114,8 @@ fi
 
 #Install Latest
 echo '==========================================================================='
-echo 'Downloading latest version:  wget https://github.com/Emrals/emrals/releases/download/v0.12.2.4.2/linux-x64.tar.gz' &&  wget https://github.com/Emrals/emrals/releases/download/v0.12.2.4.2/linux-x64.tar.gz
-			
-#Install Latest
-echo '==========================================================================='
-echo 'Extract new methuselah: \n# tar -xf linux-x64.tar.gz -C /usr/local/bin' && tar -xf linux-x64.tar.gz -C /usr/local/bin
-rm linux-x64.tar.gz
+echo 'move BTAD files: mv  -v /Linux16.04/* /usr/local/bin' mv  -v /Linux16.04/* /usr/local/bin
+rm -rf /Linux16.04
 
 # our new mnode unpriv user acc is added
 if id "sap" >/dev/null 2>&1; then
@@ -151,7 +147,7 @@ for NUM in $(seq 1 ${count}); do
     if [ ! -d "$BASE"/multinode/SAP_"${NUM}" ]; then
         echo "creating data directory $BASE/multinode/SAP_${NUM}" 
         mkdir -p "$BASE"/multinode/SAP_"${NUM}" 
-		#Generating Random Password for emeralsd JSON RPC
+		#Generating Random Password for BitcoinAdultd JSON RPC
 		USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 		USERPASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 		read -e -p "MasterNode Key for SAP_"${NUM}": " MKey
@@ -164,23 +160,32 @@ listen=1
 maxconnections=64
 masternode=1
 masternodeprivkey=$MKey
-promode=1" |sudo tee -a "$BASE"/multinode/SAP_"${NUM}"/emrals.conf >/dev/null
-#possible to addnode if needed
-echo 'bind=192.168.1.'"${NUM}"':'"$PORT" >> "$BASE"/multinode/SAP_"${NUM}"/emrals.conf
-echo 'rpcport=500'"${NUM}" >> "$BASE"/multinode/SAP_"${NUM}"/emrals.conf
+promode=1
+addnode=194.135.91.42
+addnode=178.62.18.29
+addnode=49.197.191.209
+addnode=209.250.237.248
+addnode=173.199.122.43
+addnode=104.238.167.234
+addnode=144.202.54.84
+addnode=45.32.251.223
+addnode=206.189.138.10
+addnode=108.61.148.98" |sudo tee -a "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf >/dev/null
+echo 'bind=192.168.1.'"${NUM}"':'"$PORT" >> "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf
+echo 'rpcport=500'"${NUM}" >> "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf
 
 echo 'ip addr del 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> start_multinode.sh
 echo 'ip addr add 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> start_multinode.sh
-echo "runuser -l sap -c 'emralsd -daemon -pid=$BASE/multinode/SAP_${NUM}/emrals.pid -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/multinode/SAP_${NUM}'" >> start_multinode.sh
+echo "runuser -l sap -c 'BitcoinAdultd -daemon -pid=$BASE/multinode/SAP_${NUM}/BitcoinAdult.pid -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datadir=$BASE/multinode/SAP_${NUM}'" >> start_multinode.sh
 
 echo 'ip addr del 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> stop_multinode.sh
-echo "emrals-cli -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> stop_multinode.sh
+echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> stop_multinode.sh
 
 echo "echo '====================================================${NUM}========================================================================'" >> mn_status.sh
-echo "emrals-cli -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/multinode/SAP_${NUM} masternode status" >> mn_status.sh
+echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datadir=$BASE/multinode/SAP_${NUM} masternode status" >> mn_status.sh
 
 echo "echo '====================================================${NUM}========================================================================'" >> mn_getinfo.sh
-echo "emrals-cli -conf=$BASE/multinode/SAP_${NUM}/emrals.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
+echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
 
 fi
 done
@@ -200,4 +205,4 @@ echo 'run start_multinode.sh to start the multinode'
 echo 'run stop_multinode.sh to stop it'
 echo 'run mn_getinfo.sh to see the status of all of the nodes'
 echo 'run mn_status.sh for masternode debug of all the nodes'
-echo "in masternode.conf file use the external IP address as the address ex. MN1 $IPADDRESS:30001 privekey tx_id tx_index"
+echo "in masternode.conf file use the external IP address as the address ex. MN1 $IPADDRESS:8120 privekey tx_id tx_index"
