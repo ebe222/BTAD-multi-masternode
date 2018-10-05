@@ -65,13 +65,7 @@ fi
     fi
 	
 
-#Check Deps
-sudo apt-get install lshw
-if [ -d "/var/lib/fail2ban/" ]; 
-then
-    echo -e "Dependencies already installed..."
-else
-    echo -e "Updating system and installing required packages..."
+#install Deps
 
 	sudo DEBIAN_FRONTEND=noninteractive apt-get update -y
 	sudo apt-get -y upgrade
@@ -93,32 +87,7 @@ else
 	sudo apt-get install libdb5.3++-dev libdb++-dev libdb5.3-dev libdb-dev && ldconfig
 	sudo apt-get install -y unzip libzmq3-dev build-essential libtool autoconf automake libboost-dev libssl-dev libboost-all-dev libqrencode-dev libminiupnpc-dev libboost-system1.58.0 libboost1.58-all-dev libdb4.8++ libdb4.8 libdb4.8-dev libdb4.8++-dev libevent-pthreads-2.0-5
 	sudo apt-get update
-fi 
 
-echo "This is going to take a while to install boost_1_58_0 , if it works for you then remove this step"
-	wget -O boost_1_58_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz/download
-	tar -xvzf boost_1_58_0.tar.gz
-	cd boost_1_58_0/
-
-	./bootstrap.sh --prefix=/usr/local
-	user_configFile=`find $PWD -name user-config.jam`
-	echo "using mpi ;" >> $user_configFile
-	n=`cat /proc/cpuinfo | grep "cpu cores" | uniq | awk '{print $NF}'`
-	sudo ./b2 --with=all -j $n install 
-	sudo sh -c 'echo "/usr/local/lib" >> /etc/ld.so.conf.d/local.conf'
-	sudo ldconfig
-	wget https://github.com/google/protobuf/releases/download/v2.6.0/protobuf-2.6.0.tar.gz
-	tar -xvzf protobuf-2.6.0.tar.gz
-	cd protobuf-2.6.0/
-	sudo ./configure
-	sudo make
-	sudo make check
-	sudo make install
-	sudo ldconfig
-	cd ..
-	cd ..
-	rm boost_1_58_0.tar.gz
-	rm -rf boost_1_58_0
 #Create 2GB swap file
 if grep -q "SwapTotal" /proc/meminfo; then
     echo -e "${GREEN}Skipping disk swap configuration...${NC} \n"
