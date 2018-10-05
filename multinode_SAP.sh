@@ -64,6 +64,7 @@ fi
         exit 1
     fi
 	
+
 #Check Deps
 sudo apt-get install lshw
 if [ -d "/var/lib/fail2ban/" ]; 
@@ -72,18 +73,25 @@ then
 else
     echo -e "Updating system and installing required packages..."
 
-apt-get update >/dev/null 2>&1
-DEBIAN_FRONTEND=noninteractive apt-get update > /dev/null 2>&1
-DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -y -qq upgrade >/dev/null 2>&1
-apt install -y software-properties-common >/dev/null 2>&1
-echo -e "${GREEN}Adding bitcoin PPA repository"
-apt-add-repository -y ppa:bitcoin/bitcoin >/dev/null 2>&1
-echo -e "Installing required packages, it may take some time to finish.${NC}"
-apt-get update >/dev/null 2>&1
-apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" make software-properties-common \
-build-essential libtool autoconf libssl-dev libboost-dev libboost-chrono-dev libboost-filesystem-dev libboost-program-options-dev dev \
-libboost-system-dev libboost-test-dev libboost-thread-dev sudo automake git wget curl libdb4.8-dev bsdmainutils libdb4.8++-dev \
-libminiupnpc-dev libgmp3-dev ufw pkg-config libevent-dev  unzip libzmq5 >/dev/null 2>&1
+	sudo DEBIAN_FRONTEND=noninteractive apt-get update -y
+	sudo apt-get -y upgrade
+	sudo apt-get -y dist-upgrade
+	sudo apt-get -y autoremove
+	sudo apt-get -y install wget nano htop jq git curl
+	sudo apt-get -y install libzmq3-dev libzmq5
+	sudo apt-get -y install libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev lshw
+	sudo apt-get -y install libevent-dev
+	sudo apt-get instal unzip
+	sudo apt -y install software-properties-common
+	sudo add-apt-repository ppa:bitcoin/bitcoin -y
+	sudo apt-get -y update
+	sudo apt-get -y install libdb4.8-dev libdb4.8++-dev bsdmainutils libgmp3-dev ufw pkg-config
+	sudo apt-get install unzip
+	sudo apt-get -y install libminiupnpc-dev
+	sudo apt-get -y install fail2ban
+	sudo service fail2ban restart
+	sudo apt-get install libdb5.3++-dev libdb++-dev libdb5.3-dev libdb-dev && ldconfig
+	sudo apt-get install -y unzip libzmq3-dev build-essential libtool autoconf automake libboost-dev libssl-dev libboost-all-dev libqrencode-dev libminiupnpc-dev libboost-system1.58.0 libboost1.58-all-dev libdb4.8++ libdb4.8 libdb4.8-dev libdb4.8++-dev libevent-pthreads-2.0-5
 fi 
 
 #Create 2GB swap file
