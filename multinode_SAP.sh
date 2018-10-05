@@ -80,7 +80,7 @@ else
 	sudo apt-get -y install wget nano htop jq git curl
 	sudo apt-get -y install libzmq3-dev libzmq5
 	sudo apt-get -y install libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev lshw
-	sudo apt-get -y install libevent-dev
+	sudo apt-get -y install libevent-dev libbz2-dev libicu-dev python-dev g++
 	sudo apt-get instal unzip
 	sudo apt -y install software-properties-common
 	sudo add-apt-repository ppa:bitcoin/bitcoin -y
@@ -95,29 +95,30 @@ else
 	sudo apt-get update
 fi 
 
-sudo apt-get install g++ python-dev autotools-dev libicu-dev libbz2-dev
-wget -O boost_1_58_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz/download
-tar -xvzf boost_1_58_0.tar.gz
-cd boost_1_58_0/
+echo "This is going to take a while to install boost_1_58_0 , if it works for you then remove this step"
+	wget -O boost_1_58_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz/download
+	tar -xvzf boost_1_58_0.tar.gz
+	cd boost_1_58_0/
 
-./bootstrap.sh --prefix=/usr/local
-user_configFile=`find $PWD -name user-config.jam`
-echo "using mpi ;" >> $user_configFile
-n=`cat /proc/cpuinfo | grep "cpu cores" | uniq | awk '{print $NF}'`
-sudo ./b2 --with=all -j $n install 
-sudo sh -c 'echo "/usr/local/lib" >> /etc/ld.so.conf.d/local.conf'
-sudo ldconfig
-wget https://github.com/google/protobuf/releases/download/v2.6.0/protobuf-2.6.0.tar.gz
-tar -xvzf protobuf-2.6.0.tar.gz
-cd protobuf-2.6.0/
-sudo ./configure
-sudo make
-sudo make check
-sudo make install
-sudo ldconfig
-cd /BTAD-multi-masternode
-rm boost_1_58_0.tar.gz
-rm -rf boost_1_58_0
+	./bootstrap.sh --prefix=/usr/local
+	user_configFile=`find $PWD -name user-config.jam`
+	echo "using mpi ;" >> $user_configFile
+	n=`cat /proc/cpuinfo | grep "cpu cores" | uniq | awk '{print $NF}'`
+	sudo ./b2 --with=all -j $n install 
+	sudo sh -c 'echo "/usr/local/lib" >> /etc/ld.so.conf.d/local.conf'
+	sudo ldconfig
+	wget https://github.com/google/protobuf/releases/download/v2.6.0/protobuf-2.6.0.tar.gz
+	tar -xvzf protobuf-2.6.0.tar.gz
+	cd protobuf-2.6.0/
+	sudo ./configure
+	sudo make
+	sudo make check
+	sudo make install
+	sudo ldconfig
+	cd ..
+	cd ..
+	rm boost_1_58_0.tar.gz
+	rm -rf boost_1_58_0
 #Create 2GB swap file
 if grep -q "SwapTotal" /proc/meminfo; then
     echo -e "${GREEN}Skipping disk swap configuration...${NC} \n"
