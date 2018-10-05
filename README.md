@@ -11,7 +11,7 @@ replace the # in the next command with number of nodes to setup
 
 ./multinode_SAP.sh -c # -n 4
 
-
+after everything is done , start it up ./start_multinode.sh
 
 # Credits
 script base on https://github.com/methuselah-coin/MultiNode_IPv4
