@@ -72,25 +72,18 @@ then
 else
     echo -e "Updating system and installing required packages..."
 
-sudo DEBIAN_FRONTEND=noninteractive apt-get update -y
-sudo apt-get -y upgrade
-sudo apt-get -y dist-upgrade
-sudo apt-get -y autoremove
-sudo apt-get -y install wget nano htop jq
-sudo apt-get -y install libzmq3-dev
-sudo apt-get -y install libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev lshw
-sudo apt-get -y install libevent-dev
-sudo apt-get instal unzip
-sudo apt -y install software-properties-common
-sudo add-apt-repository ppa:bitcoin/bitcoin -y
-sudo apt-get -y update
-sudo apt-get -y install libdb4.8-dev libdb4.8++-dev
-sudo apt-get install unzip
-sudo apt-get -y install libminiupnpc-dev
-sudo apt-get -y install fail2ban
-sudo service fail2ban restart
-sudo apt-get install libdb5.3++-dev libdb++-dev libdb5.3-dev libdb-dev && ldconfig
-sudo apt-get install -y unzip libzmq3-dev build-essential libssl-dev libboost-all-dev libqrencode-dev libminiupnpc-dev libboost-system1.58.0 libboost1.58-all-dev libdb4.8++ libdb4.8 libdb4.8-dev libdb4.8++-dev libevent-pthreads-2.0-5
+apt-get update >/dev/null 2>&1
+DEBIAN_FRONTEND=noninteractive apt-get update > /dev/null 2>&1
+DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -y -qq upgrade >/dev/null 2>&1
+apt install -y software-properties-common >/dev/null 2>&1
+echo -e "${GREEN}Adding bitcoin PPA repository"
+apt-add-repository -y ppa:bitcoin/bitcoin >/dev/null 2>&1
+echo -e "Installing required packages, it may take some time to finish.${NC}"
+apt-get update >/dev/null 2>&1
+apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" make software-properties-common \
+build-essential libtool autoconf libssl-dev libboost-dev libboost-chrono-dev libboost-filesystem-dev libboost-program-options-dev dev \
+libboost-system-dev libboost-test-dev libboost-thread-dev sudo automake git wget curl libdb4.8-dev bsdmainutils libdb4.8++-dev \
+libminiupnpc-dev libgmp3-dev ufw pkg-config libevent-dev  unzip libzmq5 >/dev/null 2>&1
 fi 
 
 #Create 2GB swap file
@@ -111,11 +104,14 @@ else
         rm /var/swap.img
     fi
 fi
-
+#Download Latest
+echo 'Downloading latest version:  wget https://github.com/zoldur/BitcoinAdult/releases/download/v1.0.0.0/BitcoinAdult.tar.gz' &&  wget https://github.com/zoldur/BitcoinAdult/releases/download/v1.0.0.0/BitcoinAdult.tar.gz
+			
 #Install Latest
 echo '==========================================================================='
-echo 'move BTAD files: mv  -v /Linux16.04/* /usr/local/bin' mv  -v /Linux16.04/* /usr/local/bin
-rm -rf /Linux16.04
+echo 'Extract new methuselah: \n# tar -xf BitcoinAdult.tar.gz -C /usr/local/bin' && tar -xf BitcoinAdult.tar.gz -C /usr/local/bin
+
+rm BitcoinAdult.tar.gz
 
 # our new mnode unpriv user acc is added
 if id "sap" >/dev/null 2>&1; then
@@ -157,7 +153,7 @@ rpcpassword=$USERPASS
 server=1
 daemon=1
 listen=1
-maxconnections=64
+maxconnections=256
 masternode=1
 masternodeprivkey=$MKey
 promode=1
@@ -186,6 +182,13 @@ echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datad
 
 echo "echo '====================================================${NUM}========================================================================'" >> mn_getinfo.sh
 echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
+
+echo -e "Installing and setting up firewall to allow ingress on port 8120"
+  ufw allow 8120/tcp comment "BitcoinAdult MN port" >/dev/null
+  ufw allow ssh comment "SSH" >/dev/null 2>&1
+  ufw limit ssh/tcp >/dev/null 2>&1
+  ufw default allow outgoing >/dev/null 2>&1
+  echo "y" | ufw enable >/dev/null 2>&1
 
 fi
 done
