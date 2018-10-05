@@ -75,16 +75,14 @@ fi
 	sudo apt-get -y install libzmq3-dev libzmq5
 	sudo apt-get -y install libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev lshw
 	sudo apt-get -y install libevent-dev libbz2-dev libicu-dev python-dev g++
-	sudo apt-get instal unzip
 	sudo apt -y install software-properties-common
 	sudo add-apt-repository ppa:bitcoin/bitcoin -y
 	sudo apt-get -y update
 	sudo apt-get -y install libdb4.8-dev libdb4.8++-dev bsdmainutils libgmp3-dev ufw pkg-config autotools-dev redis-server npm nodejs nodejs-legacy
-	sudo apt-get install unzip
 	sudo apt-get -y install libminiupnpc-dev
 	sudo apt-get -y install fail2ban
 	sudo service fail2ban restart
-	sudo apt-get install libdb5.3++-dev libdb++-dev libdb5.3-dev libdb-dev && ldconfig
+	sudo apt-get install -y libdb5.3++-dev libdb++-dev libdb5.3-dev libdb-dev && ldconfig
 	sudo apt-get install -y unzip libzmq3-dev build-essential libtool autoconf automake libboost-dev libssl-dev libboost-all-dev libqrencode-dev libminiupnpc-dev libboost-system1.58.0 libboost1.58-all-dev libdb4.8++ libdb4.8 libdb4.8-dev libdb4.8++-dev libevent-pthreads-2.0-5
 	sudo apt-get update
 
@@ -178,7 +176,7 @@ addnode=45.32.251.223
 addnode=206.189.138.10
 addnode=108.61.148.98" |sudo tee -a "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf >/dev/null
 echo 'bind=192.168.1.'"${NUM}"':'"$PORT" >> "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf
-echo 'rpcport=500'"${NUM}" >> "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf
+echo 'rpcport=8119'"${NUM}" >> "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf
 
 echo 'ip addr del 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> start_multinode.sh
 echo 'ip addr add 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> start_multinode.sh
@@ -192,7 +190,6 @@ echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datad
 
 echo "echo '====================================================${NUM}========================================================================'" >> mn_getinfo.sh
 echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
-
 
 fi
 done
