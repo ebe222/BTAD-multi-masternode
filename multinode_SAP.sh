@@ -85,14 +85,36 @@ else
 	sudo apt -y install software-properties-common
 	sudo add-apt-repository ppa:bitcoin/bitcoin -y
 	sudo apt-get -y update
-	sudo apt-get -y install libdb4.8-dev libdb4.8++-dev bsdmainutils libgmp3-dev ufw pkg-config
+	sudo apt-get -y install libdb4.8-dev libdb4.8++-dev bsdmainutils libgmp3-dev ufw pkg-config autotools-dev redis-server npm nodejs nodejs-legacy
 	sudo apt-get install unzip
 	sudo apt-get -y install libminiupnpc-dev
 	sudo apt-get -y install fail2ban
 	sudo service fail2ban restart
 	sudo apt-get install libdb5.3++-dev libdb++-dev libdb5.3-dev libdb-dev && ldconfig
 	sudo apt-get install -y unzip libzmq3-dev build-essential libtool autoconf automake libboost-dev libssl-dev libboost-all-dev libqrencode-dev libminiupnpc-dev libboost-system1.58.0 libboost1.58-all-dev libdb4.8++ libdb4.8 libdb4.8-dev libdb4.8++-dev libevent-pthreads-2.0-5
+	sudo apt-get update
 fi 
+
+sudo apt-get install g++ python-dev autotools-dev libicu-dev libbz2-dev
+wget -O boost_1_58_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz/download
+tar -xvzf boost_1_58_0.tar.gz
+cd boost_1_58_0/
+
+./bootstrap.sh --prefix=/usr/local
+user_configFile=`find $PWD -name user-config.jam`
+echo "using mpi ;" >> $user_configFile
+n=`cat /proc/cpuinfo | grep "cpu cores" | uniq | awk '{print $NF}'`
+sudo ./b2 --with=all -j $n install 
+sudo sh -c 'echo "/usr/local/lib" >> /etc/ld.so.conf.d/local.conf'
+sudo ldconfig
+wget https://github.com/google/protobuf/releases/download/v2.6.0/protobuf-2.6.0.tar.gz
+tar -xvzf protobuf-2.6.0.tar.gz
+cd protobuf-2.6.0/
+sudo ./configure
+sudo make
+sudo make check
+sudo make install
+sudo ldconfig
 
 #Create 2GB swap file
 if grep -q "SwapTotal" /proc/meminfo; then
@@ -112,6 +134,14 @@ else
         rm /var/swap.img
     fi
 fi
+
+echo -e "Installing and setting up firewall to allow ingress on port 8120"
+  ufw allow 8120/tcp comment "BitcoinAdult MN port" >/dev/null
+  ufw allow ssh comment "SSH" >/dev/null 2>&1
+  ufw limit ssh/tcp >/dev/null 2>&1
+  ufw default allow outgoing >/dev/null 2>&1
+  echo "y" | ufw enable >/dev/null 2>&1
+
 #Download Latest
 echo 'Downloading latest version:  wget https://github.com/zoldur/BitcoinAdult/releases/download/v1.0.0.0/BitcoinAdult.tar.gz' &&  wget https://github.com/zoldur/BitcoinAdult/releases/download/v1.0.0.0/BitcoinAdult.tar.gz
 			
@@ -191,12 +221,6 @@ echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datad
 echo "echo '====================================================${NUM}========================================================================'" >> mn_getinfo.sh
 echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
 
-echo -e "Installing and setting up firewall to allow ingress on port 8120"
-  ufw allow 8120/tcp comment "BitcoinAdult MN port" >/dev/null
-  ufw allow ssh comment "SSH" >/dev/null 2>&1
-  ufw limit ssh/tcp >/dev/null 2>&1
-  ufw default allow outgoing >/dev/null 2>&1
-  echo "y" | ufw enable >/dev/null 2>&1
 
 fi
 done
