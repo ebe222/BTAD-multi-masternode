@@ -2,17 +2,25 @@
 BTAD multi masternode(experimental , use at your own risk)
 
 git clone https://github.com/ebe222/BTAD-multi-masternode.git
-
+```bash
 cd BTAD-multi-masternode
-
 chmod +x multinode_SAP.sh
-
+```
 replace the # in the next command with number of nodes to setup
-
+```bash
 ./multinode_SAP.sh -c # -n 4
+```
+it will asks you for the masternode private keys , go to your wallet console and type: 
+```bash 
+masternode genkey
+``` 
+remember that each nodes needs a different key
 
-after everything is done , start it up ./start_multinode.sh
-
+after everything is done , start it up 
+```bash 
+./start_multinode.sh
+```
+reminder that if you restart your VPS you need to use the above command to start the masternodes servers 
 # Credits
 script base on https://github.com/methuselah-coin/MultiNode_IPv4
 
