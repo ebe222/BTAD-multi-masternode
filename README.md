@@ -20,6 +20,15 @@ after everything is done , start it up
 ```bash 
 ./start_multinode.sh
 ```
+
+Currently the commands only works while you are inside the folder that you cloned, current commands:
+```bash 
+./start_multinode.sh
+./stop_multinode.sh
+./mn_status.sh
+./mn_getinfo.sh
+```
+
 reminder that if you restart your VPS you need to use the above command to start the masternodes servers 
 # Credits
 script base on https://github.com/methuselah-coin/MultiNode_IPv4
