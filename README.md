@@ -1,8 +1,8 @@
 # BTAD-multi-masternode
 BTAD multi masternode(experimental , use at your own risk)
 
-git clone https://github.com/ebe222/BTAD-multi-masternode.git
 ```bash
+git clone https://github.com/ebe222/BTAD-multi-masternode.git
 cd BTAD-multi-masternode
 chmod +x multinode_SAP.sh
 ```
