@@ -1,5 +1,5 @@
 # BTAD-multi-masternode
-BTAD multi masternode(experimental , use at your own risk)
+BTAD multi masternode(this is not the official script , use at your own risk)
 
 ```bash
 git clone https://github.com/ebe222/BTAD-multi-masternode.git
