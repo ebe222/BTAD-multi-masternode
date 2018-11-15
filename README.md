@@ -23,10 +23,10 @@ after everything is done , start it up
 
 Currently the commands only works while you are inside the folder that you cloned, current commands:
 ```bash 
-./start_multinode.sh
-./stop_multinode.sh
-./mn_status.sh
-./mn_getinfo.sh
+./start_multinode.sh # start the masternodes
+./stop_multinode.sh # stop the masternodes
+./mn_status.sh # check the state of the masternodes
+./mn_getinfo.sh # receive info of the wallet server (can check blocks progress as well from here)
 ```
 
 reminder that if you restart your VPS you need to use the above command to start the masternodes servers 
