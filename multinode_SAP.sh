@@ -112,14 +112,20 @@ echo -e "Installing and setting up firewall to allow ingress on port 8120"
   ufw default allow outgoing >/dev/null 2>&1
   echo "y" | ufw enable >/dev/null 2>&1
 
-#Download Latest
-echo 'Downloading latest version:  wget https://github.com/zoldur/BitcoinAdult/releases/download/v1.0.0.0/BitcoinAdult.tar.gz' &&  wget https://github.com/zoldur/BitcoinAdult/releases/download/v1.0.0.0/BitcoinAdult.tar.gz
-			
 #Install Latest
 echo '==========================================================================='
-echo 'Extract new methuselah: \n# tar -xf BitcoinAdult.tar.gz -C /usr/local/bin' && tar -xf BitcoinAdult.tar.gz -C /usr/local/bin
-
-rm BitcoinAdult.tar.gz
+echo 'prepare to download'
+OLD_DIR=$(pwd)
+TMP_FOLDER=$(mktemp -d)
+cd $TMP_FOLDER >/dev/null 2>&1
+#Download Latest
+echo 'Downloading latest version:  wget https://github.com/BitcoinAdult/Bitcoin-Adult-Source-Code-v.1.1.0.0---New-Code/releases/download/v.1.1.0.0/BitcoinAdult.v.1.1.0.0.Linux.zip' &&  wget https://github.com/BitcoinAdult/Bitcoin-Adult-Source-Code-v.1.1.0.0---New-Code/releases/download/v.1.1.0.0/BitcoinAdult.v.1.1.0.0.Linux.zip
+unzip -x 'BitcoinAdult.v.1.1.0.0.Linux.zip' >/dev/null 2>&1
+cd BitcoinAdult_v1.1.0.0_Linux_16.04x64/BitcoinAdult_v1.1.0.0_Linux_16.04x64 >/dev/null 2>&1
+chmod +x * >/dev/null 2>&1
+mv 'BitcoinAdult-cli' 'BitcoinAdultd' '/usr/local/bin/' >/dev/null 2>&1
+cd $(OLD_DIR) >/dev/null 2>&1
+rm -rf $TMP_FOLDER >/dev/null 2>&1
 
 # our new mnode unpriv user acc is added
 if id "sap" >/dev/null 2>&1; then
@@ -165,19 +171,20 @@ maxconnections=256
 masternode=1
 masternodeprivkey=$MKey
 promode=1
-addnode=46.101.197.9
-addnode=188.166.62.110
-addnode=167.99.204.8
-addnode=194.135.91.42
-addnode=178.62.18.29
-addnode=49.197.191.209
-addnode=209.250.237.248
-addnode=173.199.122.43
-addnode=104.238.167.234
-addnode=144.202.54.84
-addnode=45.32.251.223
-addnode=206.189.138.10
-addnode=108.61.148.98" |sudo tee -a "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf >/dev/null
+addnode=70.79.198.30
+addnode=93.243.57.230
+addnode=199.247.2.196
+addnode=18.216.215.7
+addnode=51.75.21.94
+addnode=188.165.220.114
+addnode=191.33.74.202
+addnode=107.175.156.244
+addnode=3.16.120.81
+addnode=91.240.179.55
+addnode=144.202.0.206
+addnode=37.59.226.53
+addnode=149.28.98.249
+addnode=42.191.170.33" |sudo tee -a "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf >/dev/null
 echo 'bind=192.168.1.'"${NUM}"':'"$PORT" >> "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf
 echo 'rpcport=8119'"${NUM}" >> "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf
 
