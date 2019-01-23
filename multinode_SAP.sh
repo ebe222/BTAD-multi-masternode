@@ -126,6 +126,7 @@ chmod +x * >/dev/null 2>&1
 mv 'BitcoinAdult-cli' 'BitcoinAdultd' '/usr/local/bin/' >/dev/null 2>&1
 cd $(OLD_DIR) >/dev/null 2>&1
 rm -rf $TMP_FOLDER >/dev/null 2>&1
+echo 'Downloading bootstrap file:  wget  https://gitlab.com/btad/btad-bootstrap/blob/master/bootstrap.dat' &&  wget https://gitlab.com/btad/btad-bootstrap/blob/master/bootstrap.dat
 
 # our new mnode unpriv user acc is added
 if id "sap" >/dev/null 2>&1; then
@@ -200,7 +201,8 @@ echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datad
 
 echo "echo '====================================================${NUM}========================================================================'" >> mn_getinfo.sh
 echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
-
+echo "copying bootstrap to SAP_${NUM}"
+cp bootstrap.dat "$BASE"/multinode/SAP_"${NUM}"/
 fi
 done
 
@@ -220,3 +222,7 @@ echo 'run stop_multinode.sh to stop it'
 echo 'run mn_getinfo.sh to see the status of all of the nodes'
 echo 'run mn_status.sh for masternode debug of all the nodes'
 echo "in masternode.conf file use the external IP address as the address ex. MN1 $IPADDRESS:8120 privekey tx_id tx_index"
+
+echo "#######"
+echo "starting masternodes , use ./stop_multinode if you want to stop this"
+./start_multinode.sh
