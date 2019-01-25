@@ -126,8 +126,9 @@ chmod +x * >/dev/null 2>&1
 mv 'BitcoinAdult-cli' 'BitcoinAdultd' '/usr/local/bin/' >/dev/null 2>&1
 cd $(OLD_DIR) >/dev/null 2>&1
 rm -rf $TMP_FOLDER >/dev/null 2>&1
-echo 'Downloading bootstrap file:  wget  https://gitlab.com/btad/btad-bootstrap/blob/master/bootstrap.dat' &&  wget https://gitlab.com/btad/btad-bootstrap/blob/master/bootstrap.dat
-
+echo 'Downloading bootstrap files:  wget  https://gitlab.com/btad/btad-bootstrap/raw/master/bootstrap.zip' &&  wget https://gitlab.com/btad/btad-bootstrap/raw/master/bootstrap.zip
+unzip bootstrap.zip
+rm bootstrap.zip
 # our new mnode unpriv user acc is added
 if id "sap" >/dev/null 2>&1; then
     echo "user exists already, do nothing" 
@@ -202,7 +203,9 @@ echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datad
 echo "echo '====================================================${NUM}========================================================================'" >> mn_getinfo.sh
 echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
 echo "copying bootstrap to SAP_${NUM}"
-cp bootstrap.dat "$BASE"/multinode/SAP_"${NUM}"/
+cp -R blocks "$BASE"/multinode/SAP_"${NUM}"/
+cp -R chainstate "$BASE"/multinode/SAP_"${NUM}"/
+cp -R sporks "$BASE"/multinode/SAP_"${NUM}"/
 fi
 done
 
